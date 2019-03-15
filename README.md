@@ -13,8 +13,7 @@ self service update.
 # Worflow
 
 To deploy an updated data version to the Agora development database
-1. Increment `data-version` in [package.json](https://github.com/Sage-Bionetworks/Agora/blob/develop/package.json)
-on the `develop` branch.
+1. Increment `data-version` in `data-manifest.json` on the `develop` branch.
 2. Commit the change
 3. Rerun the [travis build](https://travis-ci.org/Sage-Bionetworks/agora-data-manager/builds)
 
