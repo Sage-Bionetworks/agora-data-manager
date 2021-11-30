@@ -25,11 +25,19 @@ DATA_MANIFEST_ID=$(cat $WORKING_DIR/data-manifest.json | grep data-manifest-id |
 TEAM_IMAGES_ID=$(cat $WORKING_DIR/data-manifest.json | grep team-images-id | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
 echo "$TRAVIS_BRANCH branch, DATA_VERSION = $DATA_VERSION, manifest id = $DATA_MANIFEST_ID"
 
-# get data from synapse
-synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD cat --version $DATA_VERSION $DATA_MANIFEST_ID | tail -n +2 | while IFS=, read -r id version; do
-  synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_DIR -v $version $id ;
-done
+# Download the manifest file from synapse
+synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_DIR -v $DATA_VERSION $DATA_MANIFEST_ID
 
+# Ensure there's a newline at the end of the manifest file; otherwise the last listed file will not be downloaded
+echo >> $DATA_DIR/data_manifest.csv
+
+# Download all files referenced in the manifest from synapse
+cat $DATA_DIR/data_manifest.csv | tail -n +2 | while IFS=, read -r id version; do
+  echo Downloading $id,$version
+    synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_DIR -v $version $id ;
+  done
+
+# Download team images
 synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get -r --downloadLocation $TEAM_IMAGES_DIR/ $TEAM_IMAGES_ID
 
 echo "Data Files: "
@@ -48,7 +56,9 @@ mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabas
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesmetabolomics --jsonArray --drop --file $DATA_DIR/metabolomics.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesneuropathcorr --jsonArray --drop --file $DATA_DIR/neuropath_corr.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection geneexpvalidation --jsonArray --drop --file $DATA_DIR/target_exp_validation_harmonized.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genescoredistribution --drop --file $DATA_DIR/distribution_data.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesoverallscores --jsonArray --drop --file $DATA_DIR/overall_scores.json
 
 pushd $TEAM_IMAGES_DIR
-ls -1r *.jpg | while read x; do mongofiles -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase $DB_USER -v put $x --replace; echo $x; done
+ls -1r *.{jpg,jpeg} | while read x; do mongofiles -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase $DB_USER -v put $x --replace; echo $x; done
 popd
