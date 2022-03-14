@@ -29,7 +29,7 @@ echo "$TRAVIS_BRANCH branch, DATA_VERSION = $DATA_VERSION, manifest id = $DATA_M
 synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_DIR -v $DATA_VERSION $DATA_MANIFEST_ID
 
 # Ensure there's a newline at the end of the manifest file; otherwise the last listed file will not be downloaded
-echo >> $DATA_DIR/data_manifest.csv
+# echo >> $DATA_DIR/data_manifest.csv
 
 # Download all files referenced in the manifest from synapse
 cat $DATA_DIR/data_manifest.csv | tail -n +2 | while IFS=, read -r id version; do
@@ -58,6 +58,8 @@ mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabas
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection geneexpvalidation --jsonArray --drop --file $DATA_DIR/target_exp_validation_harmonized.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genescoredistribution --drop --file $DATA_DIR/distribution_data.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesoverallscores --jsonArray --drop --file $DATA_DIR/overall_scores.json
+
+mongo --host $DB_HOST -u $DB_USER -p $DB_PASS --authenticationDatabase admin $WORKING_DIR/create-indexes.js
 
 pushd $TEAM_IMAGES_DIR
 ls -1r *.{jpg,jpeg} | while read x; do mongofiles -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase $DB_USER -v put $x --replace; echo $x; done
