@@ -45,21 +45,36 @@ ls -al $WORKING_DIR
 ls -al $DATA_DIR
 ls -al $TEAM_IMAGES_DIR
 
+# Connect to the agora database & clear all collections (avoids reindexing)
+mongosh "mongodb://$DB_HOST/agora" -u $DB_USER -p $DB_PASS --authenticationDatabase admin
+mongosh db.genes.deleteMany( {} )
+mongosh db.geneslinks.deleteMany( {} )
+mongosh db.geneinfo.deleteMany( {} )
+mongosh db.teaminfo.deleteMany( {} )
+mongosh db.genesproteomics.deleteMany( {} )
+mongosh db.genesmetabolomics.deleteMany( {} )
+mongosh db.genesneuropathcorr.deleteMany( {} )
+mongosh db.geneexpvalidation.deleteMany( {} )
+mongosh db.genescoredistribution.deleteMany( {} )
+mongosh db.genesoverallscores.deleteMany( {} )
+mongosh db.rnaboxdistribution.deleteMany( {} )
+mongosh db.proteomicsboxdistribution.deleteMany( {} )
+exit
+
 # Import synapse data to database
 # Not using --mode upsert for now because we don't have unique indexes properly set for the collections
-
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genes --jsonArray --drop --file $DATA_DIR/rnaseq_differential_expression.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection geneslinks --jsonArray --drop --file $DATA_DIR/network.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection geneinfo --jsonArray --drop --file $DATA_DIR/gene_info.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection teaminfo --jsonArray --drop --file $DATA_DIR/team_info.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesproteomics --jsonArray --drop --file $DATA_DIR/proteomics.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesmetabolomics --jsonArray --drop --file $DATA_DIR/metabolomics.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesneuropathcorr --jsonArray --drop --file $DATA_DIR/neuropath_corr.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection geneexpvalidation --jsonArray --drop --file $DATA_DIR/target_exp_validation_harmonized.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genescoredistribution --jsonArray --drop --file $DATA_DIR/distribution_data.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesoverallscores --jsonArray --drop --file $DATA_DIR/overall_scores.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection rnaboxdistribution --jsonArray --drop --file $DATA_DIR/rna_distribution_data.json
-mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection proteomicsboxdistribution --jsonArray --drop --file $DATA_DIR/proteomics_distribution_data.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genes --jsonArray --file $DATA_DIR/rnaseq_differential_expression.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection geneslinks --jsonArray --file $DATA_DIR/network.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection geneinfo --jsonArray --file $DATA_DIR/gene_info.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection teaminfo --jsonArray --file $DATA_DIR/team_info.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesproteomics --jsonArray --file $DATA_DIR/proteomics.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesmetabolomics --jsonArray --file $DATA_DIR/metabolomics.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesneuropathcorr --jsonArray --file $DATA_DIR/neuropath_corr.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection geneexpvalidation --jsonArray --file $DATA_DIR/target_exp_validation_harmonized.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genescoredistribution --jsonArray --file $DATA_DIR/distribution_data.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesoverallscores --jsonArray --file $DATA_DIR/overall_scores.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection rnaboxdistribution --jsonArray --file $DATA_DIR/rna_distribution_data.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection proteomicsboxdistribution --jsonArray --file $DATA_DIR/proteomics_distribution_data.json
 
 mongo --host $DB_HOST -u $DB_USER -p $DB_PASS --authenticationDatabase admin $WORKING_DIR/create-indexes.js
 
