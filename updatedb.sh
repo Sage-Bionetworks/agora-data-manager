@@ -7,6 +7,7 @@ set -e
 eval export "DB_HOST=\$DB_HOST_$TRAVIS_BRANCH"
 eval export "DB_USER=\$DB_USER_$TRAVIS_BRANCH"
 eval export "DB_PASS=\$DB_PASS_$TRAVIS_BRANCH"
+eval export "DB_URI=\$DB_URI_$TRAVIS_BRANCH"
 
 # Escape chars in env vars
 q_mid=\'\\\'\'
