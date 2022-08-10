@@ -46,7 +46,7 @@ ls -al $DATA_DIR
 ls -al $TEAM_IMAGES_DIR
 
 # Connect to the agora database & clear all collections (avoids reindexing)
-mongosh "mongodb://$DB_HOST/agora" -u $DB_USER -p $DB_PASS --authenticationDatabase admin
+mongosh "mongodb://$DB_HOST/agora" -u $DB_USER -p $DB_PASS --authenticationDatabase $DB_USER
 mongosh db.genes.deleteMany( {} )
 mongosh db.geneslinks.deleteMany( {} )
 mongosh db.geneinfo.deleteMany( {} )
@@ -79,5 +79,5 @@ mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabas
 mongo --host $DB_HOST -u $DB_USER -p $DB_PASS --authenticationDatabase admin $WORKING_DIR/create-indexes.js
 
 pushd $TEAM_IMAGES_DIR
-ls -1r *.{jpg,jpeg} | while read x; do mongofiles -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase $DB_USER -v put $x --replace; echo $x; done
+ls -1r *.{jpg,jpeg} | while read x; do mongofiles "$DB_URI" -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase $DB_USER -v put $x; echo $x; done
 popd
