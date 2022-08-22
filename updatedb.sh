@@ -20,6 +20,9 @@ DB_PASS_ESC="'${DB_PASS//\'/$q_mid}'"
 BASTIAN_USER="ec2-user"
 BASTIAN_SSH_KEY="~/.ssh/agora-ci-$TRAVIS_BRANCH.pem"
 
+# set SSH configuration
+echo -e "Host $BASTIAN_HOST\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
 # clean up from previous builds
 ssh -i $BASTIAN_SSH_KEY $BASTIAN_USER@$BASTIAN_HOST "rm -rf /tmp/work"
 
