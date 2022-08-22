@@ -4,6 +4,7 @@
 set -e
 
 # double interpolate vars from travis
+eval export "BASTIAN_HOST=\$BASTIAN_HOST_$TRAVIS_BRANCH"
 eval export "DB_HOST=\$DB_HOST_$TRAVIS_BRANCH"
 eval export "DB_USER=\$DB_USER_$TRAVIS_BRANCH"
 eval export "DB_PASS=\$DB_PASS_$TRAVIS_BRANCH"
