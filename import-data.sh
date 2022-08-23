@@ -59,9 +59,11 @@ mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabas
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genescoredistribution --drop --file $DATA_DIR/distribution_data.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesoverallscores --jsonArray --drop --file $DATA_DIR/overall_scores.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection rnaboxdistribution --jsonArray --drop --file $DATA_DIR/rna_distribution_data.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection proteomicsboxdistribution --jsonArray --drop --file $DATA_DIR/proteomics_distribution_data.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection proteomicstmt --jsonArray --drop --file $DATA_DIR/proteomics_tmt.json
 
 mongo --host $DB_HOST -u $DB_USER -p $DB_PASS --authenticationDatabase admin $WORKING_DIR/create-indexes.js
 
 pushd $TEAM_IMAGES_DIR
-ls -1r *.{jpg,jpeg} | while read x; do mongofiles -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase $DB_USER -v put $x --replace; echo $x; done
+ls -1r *.{jpg,jpeg} | while read x; do mongofiles "mongodb://$DB_HOST/agora?retryWrites=false" -u $DB_USER -p $DB_PASS --authenticationDatabase admin -v put $x; echo $x; done
 popd
