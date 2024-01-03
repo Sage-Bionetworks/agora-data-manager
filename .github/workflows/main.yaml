@@ -1,0 +1,32 @@
+name: main
+
+on:
+  pull_request:
+    branches: [ '*' ]
+  push:
+    branches: [ 'develop','staging','prod' ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    # context environment variables are setup in github to match branch names
+    environment:
+      name: ${{ github.ref_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: BSFishy/pip-action@v1
+        with:
+          packages: |
+            synapseclient[pandas,pysftp]
+      - name: Setup mongo tools - mongo-tools and mongo-shell
+        uses: boly38/action-mongo-tools@stable
+      - name: Import Synapse Data
+        run: ./import-data.sh $BRANCH $SYNAPSE_USERNAME $SYNAPSE_PASSWORD $DB_HOST $DB_USER $DB_PASS
+        env:
+          BRANCH: ${{ github.ref_name }}
+          SYNAPSE_USERNAME: ${{ secrets.SYNAPSE_USERNAME }}
+          SYNAPSE_PASSWORD: ${{ secrets.SYNAPSE_PASSWORD }}
+          DB_HOST: ${{ vars.DB_HOST }}
+          DB_USER: ${{ vars.DB_USER }}
+          DB_PASS: ${{ vars.DB_PASS }}
