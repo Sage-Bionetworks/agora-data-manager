@@ -48,5 +48,9 @@ Context specific secrets for each environment that corresponds to a git branch (
 | DB_PASS   | The database password       | supersecret                                                               |
 
 
+![alt text][github_secrets]
+
+
 
 [db_update]: agora-db-update.drawio.png "update diagram"
+[github_secrets]: github_secrets.png "github secrets screen"
