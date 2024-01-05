@@ -55,13 +55,11 @@ Context specific secrets for each environment that corresponds to a git branch (
 
 ## Self hosted runners
 
-We setup a bastian host in AWS for each environment which have access to the
-databases.  Then we associate those bastian hosts to
-[Github self-hosted runners](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#about-self-hosted-runners).
-The update is executed from these runners.  Each runner corresponds
-to an environment which  corresponds to a git branch.  When a push happens on a
-branch (i.e. develop), the update is executed on the `agora-bastian-develop` runner
-which in turn updates the development database.
+[agora2-infra] repository deploys a bastian host in AWS for each environment which have
+access to the databases.  Then we associate those bastian hosts to [Github self-hosted runners].
+The update is executed from these runners.  Each runner corresponds to an environment which
+corresponds to a git branch.  When a push happens on a branch (i.e. develop), the update
+is executed on the `agora-bastian-develop` runner which in turn updates the development database.
 
 ![alt text][self_hosted_runners]
 
@@ -69,3 +67,5 @@ which in turn updates the development database.
 [db_update]: agora-db-update.drawio.png "update diagram"
 [github_secrets]: github_secrets.png "github secrets screen"
 [self_hosted_runners]: self-hosted-runners.png "self hosted runners"
+[agora2-infra]: https://github.com/Sage-Bionetworks/agora2-infra "agora2-infra repository"
+[Github self-hosted runners]: https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#about-self-hosted-runners
