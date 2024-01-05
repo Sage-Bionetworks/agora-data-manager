@@ -1,5 +1,6 @@
 # Overview
-Agora Data Manager is a tool that loads the JSON files into Agora's document database instances in our AWS environments.
+Agora Data Manager is a tool that loads the JSON files into Agora's document database
+instances in our AWS environments.
 
 # Purpose
 This project allows Agora maintainers to update the Agora database with
@@ -55,11 +56,13 @@ Context specific secrets for each environment that corresponds to a git branch (
 
 ## Self hosted runners
 
-[agora2-infra] repository deploys a bastian host in AWS for each environment which have
-access to the databases.  Then we associate those bastian hosts to [Github self-hosted runners].
-The update is executed from these runners.  Each runner corresponds to an environment which
-corresponds to a git branch.  When a push happens on a branch (i.e. develop), the update
+[agora2-infra] repository deploys a bastian host in AWS for each environment which have access to
+the databases.  We manually configure a [Github self-hosted runner] for each bastian host,
+a label is applied to each runner to match the corresponding deployment branch name (develop/staging/prod).
+Each runner corresponds to an environment which corresponds to a git branch. The update is
+executed from these runners.  When a push happens on a branch (i.e. develop), the update
 is executed on the `agora-bastian-develop` runner which in turn updates the development database.
+
 
 ![alt text][self_hosted_runners]
 
