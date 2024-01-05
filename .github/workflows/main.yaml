@@ -1,11 +1,20 @@
 name: main
 
 on:
+  pull_request:
+    branches: ['*']
   push:
     branches: ['develop', 'staging', 'prod' ]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pre-commit/action@v3.0.0
+
   deploy:
+    if: ${{ github.event_name == 'push' }}
     # self hosted runner labels are setup in github to match branch names
     runs-on: [self-hosted, "${{ github.ref_name }}"]
     # variables in context environments are setup in github to match branch names
