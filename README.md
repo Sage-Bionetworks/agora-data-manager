@@ -5,7 +5,7 @@ instances in our AWS environments.
 # Purpose
 This project allows Agora maintainers to update the Agora database with
 new versions of gene data from Synapse.  This is a manually triggered,
-self-service update. 
+self-service update.
 
 # Execution
 
