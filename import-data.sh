@@ -13,11 +13,11 @@ DB_USER=$5
 DB_PASS=$6
 
 CURRENT_DIR=$(pwd)
-PARENT_DIR="$(dirname "$CURRENT_DIR")"
-TMP_DIR=/tmp
-WORKING_DIR=$TMP_DIR/work
+WORKING_DIR=$CURRENT_DIR
 DATA_DIR=$WORKING_DIR/data
 TEAM_IMAGES_DIR=$DATA_DIR/team_images
+
+mkdir -p $TEAM_IMAGES_DIR
 
 # Version key/value should be on his own line
 DATA_VERSION=$(cat $WORKING_DIR/data-manifest.json | grep data-version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
