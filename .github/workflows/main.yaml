@@ -7,7 +7,7 @@ on:
     branches: ['develop', 'staging', 'prod' ]
 
 jobs:
-  test:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,6 +15,7 @@ jobs:
 
   deploy:
     if: ${{ github.event_name == 'push' }}
+    needs: ["tests"]
     # self hosted runner labels are setup in github to match branch names
     runs-on: [self-hosted, "${{ github.ref_name }}"]
     # variables in context environments are setup in github to match branch names
