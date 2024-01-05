@@ -10,7 +10,7 @@ self-service update.
 
 ![alt text][db_update]
 
-# Worflow
+# Workflow
 
 To deploy an updated data version to the Agora development database
 1. Increment `data-version` in `data-manifest.json` on the `develop` branch.
@@ -28,6 +28,8 @@ To deploy an updated data version to the Agora production database:
 
 
 # Setup
+
+## Secrets
 
 The following secrets need to be setup in Github for the scripts to deploy database updates:
 
@@ -51,6 +53,18 @@ Context specific secrets for each environment that corresponds to a git branch (
 ![alt text][github_secrets]
 
 
+## Self hosted runners
+
+We setup a self hosted runner (or bastian hosts) in AWS for each environment.
+The self hosted runners have access to the AWS databases and the update is
+executed from these runners.  Each runner corresponds to an environment which
+corresponds to a git branch.  When a push happens on a branch (i.e. develop),
+the update is executed on the `agora-bastian-develop` runner which will update
+the development database.
+
+![alt text][self_hosted_runners]
+
 
 [db_update]: agora-db-update.drawio.png "update diagram"
 [github_secrets]: github_secrets.png "github secrets screen"
+[self_hosted_runners]: self-hosted-runners.png "github self hosted runners"
