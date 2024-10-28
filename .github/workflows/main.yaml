@@ -34,3 +34,4 @@ jobs:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
