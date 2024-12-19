@@ -40,7 +40,6 @@ Global secrets:
 |----------------------|----------------------------------|----------------------------------|
 | SYNAPSE_PASSWORD     | Synapse service user token (PAT) | glY4283tLQHZ...0eXAiOi...JKV1QiL |
 
-
 Context specific secrets for each environment that corresponds to a git branch (develop/staging/prod):
 
 | Variable  | Description                 | Example                                                                   |
@@ -58,6 +57,7 @@ Context specific secrets for each environment that corresponds to a git branch (
 [agora2-infra] repository deploys a bastian host in AWS for each environment which have access to
 the databases.  We manually configure a [Github self-hosted runner](https://docs.github.com/en/actions/hosting-your-own-runners)
 for each bastian host, a label is applied to each runner to match the corresponding git branch name (develop/staging/prod).
+
 Each runner corresponds to an environment which corresponds to a git branch. The update is
 executed from these runners.  When a push happens on a branch (i.e. develop), the update
 is executed on the `agora-bastian-develop` runner which in turn updates the development database.
