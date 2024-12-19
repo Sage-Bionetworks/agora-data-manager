@@ -6,11 +6,10 @@
 set -e
 
 BRANCH=$1
-SYNAPSE_USERNAME=$2
-SYNAPSE_PASSWORD=$3
-DB_HOST=$4
-DB_USER=$5
-DB_PASS=$6
+SYNAPSE_PASSWORD=$2
+DB_HOST=$3
+DB_USER=$4
+DB_PASS=$5
 
 CURRENT_DIR=$(pwd)
 WORKING_DIR=$CURRENT_DIR
@@ -26,7 +25,7 @@ TEAM_IMAGES_ID=$(cat $WORKING_DIR/data-manifest.json | grep team-images-id | hea
 echo "$BRANCH branch, DATA_VERSION = $DATA_VERSION, manifest id = $DATA_MANIFEST_ID"
 
 # Download the manifest file from synapse
-synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_DIR -v $DATA_VERSION $DATA_MANIFEST_ID
+synapse -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_DIR -v $DATA_VERSION $DATA_MANIFEST_ID
 
 # Ensure there's a newline at the end of the manifest file; otherwise the last listed file will not be downloaded
 # echo >> $DATA_DIR/data_manifest.csv
@@ -34,11 +33,11 @@ synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_D
 # Download all files referenced in the manifest from synapse
 cat $DATA_DIR/data_manifest.csv | tail -n +2 | while IFS=, read -r id version; do
   echo Downloading $id,$version
-    synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_DIR -v $version $id ;
+    synapse -p $SYNAPSE_PASSWORD get --downloadLocation $DATA_DIR -v $version $id ;
   done
 
 # Download team images
-synapse -u $SYNAPSE_USERNAME -p $SYNAPSE_PASSWORD get -r --downloadLocation $TEAM_IMAGES_DIR/ $TEAM_IMAGES_ID
+synapse -p $SYNAPSE_PASSWORD get -r --downloadLocation $TEAM_IMAGES_DIR/ $TEAM_IMAGES_ID
 
 echo "Data Files: "
 ls -al $WORKING_DIR
@@ -65,7 +64,7 @@ mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabas
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection genesbiodomains --jsonArray --drop --file $DATA_DIR/genes_biodomains.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection biodomaininfo --jsonArray --drop --file $DATA_DIR/biodomain_info.json
 
-mongo --host $DB_HOST -u $DB_USER -p $DB_PASS --authenticationDatabase admin $WORKING_DIR/create-indexes.js
+mongosh --host $DB_HOST -u $DB_USER -p $DB_PASS --authenticationDatabase admin $WORKING_DIR/create-indexes.js
 
 pushd $TEAM_IMAGES_DIR
 ls -1r *.{jpg,jpeg,png} | while read x; do mongofiles -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase $DB_USER -v put $x; echo $x; done
