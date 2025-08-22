@@ -40,7 +40,6 @@ Global secrets:
 |----------------------|----------------------------------|----------------------------------|
 | SYNAPSE_PASSWORD     | Synapse service user token (PAT) | glY4283tLQHZ...0eXAiOi...JKV1QiL |
 
-
 Context specific secrets for each environment that corresponds to a git branch (develop/staging/prod):
 
 | Variable  | Description                 | Example                                                                   |
