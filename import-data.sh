@@ -1,6 +1,6 @@
 # This script gets data from synapse then imports the data to an agora DB.
-# This script needs to be run from an agora bastian machine, it assumes that
-# the bastian is already setup with synapse, mongoimport and mongofiles
+# This script needs to be run from an agora bastion machine, it assumes that
+# the bastion is already setup with synapse, mongoimport and mongofiles
 # command line clients
 #!/bin/bash
 set -e

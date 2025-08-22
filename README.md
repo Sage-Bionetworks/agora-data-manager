@@ -54,10 +54,9 @@ Context specific secrets for each environment that corresponds to a git branch (
 
 ## Self hosted runners
 
-[agora-infra-v3] repository deploys a bastian host in AWS for each environment which have access to
+[agora-infra-v3] repository deploys a bastion host in AWS for each environment which have access to
 the databases.  We manually configure a [Github self-hosted runner](https://docs.github.com/en/actions/hosting-your-own-runners)
-for each bastian host, a label is applied to each runner to match the corresponding git branch name (develop/staging/prod).
-
+for each bastion host, a label is applied to each runner to match the corresponding git branch name (develop/staging/prod).
 Each runner corresponds to an environment which corresponds to a git branch. The update is
 executed from these runners.  When a push happens on a branch (i.e. develop), the update
 is executed on the self-hosted runner with the `develop` label, which in turn updates the development database.
@@ -101,7 +100,7 @@ sh-4.2$ ./config.sh --url https://github.com/Sage-Bionetworks/agora-data-manager
 
 Enter the name of the runner group to add this runner to: [press Enter for Default]
 
-Enter the name of runner: [press Enter for ip-10-XXX-XXX-XXX] agora-bastian-prod
+Enter the name of runner: [press Enter for ip-10-XXX-XXX-XXX] agora-bastion-prod
 
 This runner will have the following labels: 'self-hosted', 'Linux', 'X64'
 Enter any additional labels (ex. label-1,label-2): [press Enter to skip] prod
