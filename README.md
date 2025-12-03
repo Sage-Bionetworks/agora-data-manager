@@ -65,9 +65,9 @@ is executed on the self-hosted runner with the `develop` label, which in turn up
 ![alt text][self_hosted_runners]
 
 
-### Setup self hosted runners
+### Setup self-hosted runners
 
-Github self hosted runners are deployed with [Cloudformation](https://github.com/Sage-Bionetworks-IT/agora-infra-v3/blob/dev/src/bastion_stack.py).
+Github self-hosted runners are deployed with [Cloudformation](https://github.com/Sage-Bionetworks-IT/agora-infra-v3/blob/dev/src/bastion_stack.py).
 
 Self Hosted Runner setup:
 * Deploy the template to the Agora AWS account.

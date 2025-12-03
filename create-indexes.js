@@ -10,7 +10,8 @@ const collections = [
         indexes: [
             { ensembl_gene_id: 1, hgnc_symbol: 1 },
             { hgnc_symbol: 1 },
-            { nominations: -1, hgnc_symbol: 1 }
+            { alias: 1 },
+            { total_nominations: -1, hgnc_symbol: 1 }
         ]
     },
     {
