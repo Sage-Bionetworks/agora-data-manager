@@ -76,7 +76,7 @@ const collections = [
         indexes: [
             { ensembl_gene_id: 1 }
         ]
-    }, 
+    },
     {
         name: 'uiconfig',
         indexes: [
