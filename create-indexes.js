@@ -64,6 +64,24 @@ const collections = [
         indexes: [
             { name: 1 }
         ]
+    },
+    {
+        name: 'nominateddrugs',
+        indexes: [
+            { common_name: 1 }
+        ]
+    },
+    {
+        name: 'nominatedtargets',
+        indexes: [
+            { ensembl_gene_id: 1 }
+        ]
+    },
+    {
+        name: 'uiconfig',
+        indexes: [
+            { page: 1 }
+        ]
     }
 ];
 
