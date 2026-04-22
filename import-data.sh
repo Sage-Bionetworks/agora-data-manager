@@ -74,6 +74,7 @@ mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabas
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection nominateddrugs --jsonArray --drop --file $DATA_DIR/nominated_drugs.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection nominatedtargets --jsonArray --drop --file $DATA_DIR/nominated_targets.json
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection uiconfig --jsonArray --drop --file $DATA_DIR/ui_config.json
+mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection druginfo --jsonArray --drop --file $DATA_DIR/drug_info.json
 
 echo "Importing dataversion from ${DATAVERSION_PATH}"
 mongoimport -h $DB_HOST -d agora -u $DB_USER -p $DB_PASS --authenticationDatabase admin --collection dataversion $DATAVERSION_FLAG --drop --file $DATAVERSION_PATH

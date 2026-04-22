@@ -68,7 +68,8 @@ const collections = [
     {
         name: 'nominateddrugs',
         indexes: [
-            { common_name: 1 }
+            { common_name: 1 },
+            { chembl_id: 1, combined_with: 1 }
         ]
     },
     {
@@ -81,6 +82,12 @@ const collections = [
         name: 'uiconfig',
         indexes: [
             { page: 1 }
+        ]
+    },
+    {
+        name: 'druginfo',
+        indexes: [
+            { chembl_id: 1 }
         ]
     }
 ];
