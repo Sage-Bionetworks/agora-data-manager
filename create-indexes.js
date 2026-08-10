@@ -4,6 +4,8 @@ print('');
 print('Creating indexes for "' + db.getName() + '"');
 print('');
 
+const collation = { locale: 'en', strength: 2 };
+
 const collections = [
     {
         name: 'geneinfo',
@@ -19,6 +21,9 @@ const collections = [
         indexes: [
             { ensembl_gene_id: 1, tissue: 1, model: 1 },
             { ensembl_gene_id: 1, model: 1 },
+            { hgnc_symbol: 1, tissue: 1, model: 1 }
+        ],
+        collatedIndexes: [
             { hgnc_symbol: 1, tissue: 1, model: 1 }
         ]
     },
@@ -100,6 +105,17 @@ for (let collection of collections) {
         print('Creating index...');
         printjson(index);
         results = db[collection.name].createIndex(index);
+        if (results && results.ok === 1) {
+            print(results.numIndexesBefore < results.numIndexesAfter ? 'Success!' : 'Index already exists.');
+        }
+        else {
+            print('Failed: ' + results.note ? results.note : 'N/A');
+        }
+    }
+    for (let index of (collection.collatedIndexes || [])) {
+        const name = Object.keys(index).map(k => k + '_' + index[k]).join('_') + '_collated';
+        print('Creating collated index: ' + name);
+        results = db[collection.name].createIndex(index, { name: name, collation: collation });
         if (results && results.ok === 1) {
             print(results.numIndexesBefore < results.numIndexesAfter ? 'Success!' : 'Index already exists.');
         }
