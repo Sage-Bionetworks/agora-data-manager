@@ -30,8 +30,20 @@ const collections = [
     {
         name: 'geneslinks',
         indexes: [
-            { geneA_ensembl_gene_id: 1 },
+            { geneA_ensembl_gene_id: 1, geneB_ensembl_gene_id: 1 },
             { geneB_ensembl_gene_id: 1 },
+        ]
+    },
+    {
+        name: 'genesneuropathcorr',
+        indexes: [
+            { ensg: 1 }
+        ]
+    },
+    {
+        name: 'genesoverallscores',
+        indexes: [
+            { ensembl_gene_id: 1 }
         ]
     },
     {
