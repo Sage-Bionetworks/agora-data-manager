@@ -23,8 +23,6 @@ const collections = [
         name: 'genes',
         indexes: [
             { ensembl_gene_id: 1, tissue: 1, model: 1 },
-            { ensembl_gene_id: 1, model: 1 },
-            { hgnc_symbol: 1, tissue: 1, model: 1 }
         ],
         collatedIndexes: [
             { hgnc_symbol: 1, tissue: 1, model: 1 }
@@ -77,12 +75,6 @@ const collections = [
         name: 'genesbiodomains',
         indexes: [
             { ensembl_gene_id: 1 }
-        ]
-    },
-    {
-        name: 'biodomaininfo',
-        indexes: [
-            { name: 1 }
         ]
     },
     {
