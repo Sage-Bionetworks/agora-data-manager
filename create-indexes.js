@@ -14,6 +14,9 @@ const collections = [
             { hgnc_symbol: 1 },
             { alias: 1 },
             { total_nominations: -1, hgnc_symbol: 1 }
+        ],
+        collatedIndexes: [
+            { hgnc_symbol: 1, ensembl_gene_id: 1 }
         ]
     },
     {
@@ -90,9 +93,16 @@ const collections = [
         ]
     },
     {
-        name: 'nominatedtargets',
+        name: 'geneexpvalidation',
         indexes: [
             { ensembl_gene_id: 1 }
+        ]
+    },
+    {
+        name: 'nominatedtargets',
+        indexes: [
+            { ensembl_gene_id: 1 },
+            { hgnc_symbol: 1 }
         ]
     },
     {
