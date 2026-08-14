@@ -85,12 +85,6 @@ const collections = [
         ]
     },
     {
-        name: 'geneexpvalidation',
-        indexes: [
-            { ensembl_gene_id: 1 }
-        ]
-    },
-    {
         name: 'nominatedtargets',
         indexes: [
             { ensembl_gene_id: 1 },
@@ -115,7 +109,7 @@ let results;
 
 for (let collection of collections) {
     print('Collection: ' + collection.name);
-    for (let index of collection.indexes) {
+    for (let index of (collection.indexes || [])) {
         print('Creating index...');
         printjson(index);
         results = db[collection.name].createIndex(index);
@@ -127,9 +121,9 @@ for (let collection of collections) {
         }
     }
     for (let index of (collection.collatedIndexes || [])) {
-        const name = Object.keys(index).map(k => k + '_' + index[k]).join('_') + '_collated';
-        print('Creating collated index: ' + name);
-        results = db[collection.name].createIndex(index, { name: name, collation: collation });
+        print('Creating collated index...');
+        printjson(index);
+        results = db[collection.name].createIndex(index, { collation: collation });
         if (results && results.ok === 1) {
             print(results.numIndexesBefore < results.numIndexesAfter ? 'Success!' : 'Index already exists.');
         }
