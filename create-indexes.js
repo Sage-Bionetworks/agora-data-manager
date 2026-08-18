@@ -14,14 +14,15 @@ const collections = [
             { hgnc_symbol: 1 },
             { alias: 1 },
             { total_nominations: -1, hgnc_symbol: 1 }
+        ],
+        collatedIndexes: [
+            { hgnc_symbol: 1, ensembl_gene_id: 1 }
         ]
     },
     {
         name: 'genes',
         indexes: [
             { ensembl_gene_id: 1, tissue: 1, model: 1 },
-            { ensembl_gene_id: 1, model: 1 },
-            { hgnc_symbol: 1, tissue: 1, model: 1 }
         ],
         collatedIndexes: [
             { hgnc_symbol: 1, tissue: 1, model: 1 }
@@ -30,8 +31,20 @@ const collections = [
     {
         name: 'geneslinks',
         indexes: [
-            { geneA_ensembl_gene_id: 1 },
+            { geneA_ensembl_gene_id: 1, geneB_ensembl_gene_id: 1 },
             { geneB_ensembl_gene_id: 1 },
+        ]
+    },
+    {
+        name: 'genesneuropathcorr',
+        indexes: [
+            { ensg: 1 }
+        ]
+    },
+    {
+        name: 'genesoverallscores',
+        indexes: [
+            { ensembl_gene_id: 1 }
         ]
     },
     {
@@ -65,12 +78,6 @@ const collections = [
         ]
     },
     {
-        name: 'biodomaininfo',
-        indexes: [
-            { name: 1 }
-        ]
-    },
-    {
         name: 'nominateddrugs',
         indexes: [
             { common_name: 1 },
@@ -80,7 +87,8 @@ const collections = [
     {
         name: 'nominatedtargets',
         indexes: [
-            { ensembl_gene_id: 1 }
+            { ensembl_gene_id: 1 },
+            { hgnc_symbol: 1 }
         ]
     },
     {
@@ -101,7 +109,7 @@ let results;
 
 for (let collection of collections) {
     print('Collection: ' + collection.name);
-    for (let index of collection.indexes) {
+    for (let index of (collection.indexes || [])) {
         print('Creating index...');
         printjson(index);
         results = db[collection.name].createIndex(index);
@@ -113,9 +121,9 @@ for (let collection of collections) {
         }
     }
     for (let index of (collection.collatedIndexes || [])) {
-        const name = Object.keys(index).map(k => k + '_' + index[k]).join('_') + '_collated';
-        print('Creating collated index: ' + name);
-        results = db[collection.name].createIndex(index, { name: name, collation: collation });
+        print('Creating collated index...');
+        printjson(index);
+        results = db[collection.name].createIndex(index, { collation: collation });
         if (results && results.ok === 1) {
             print(results.numIndexesBefore < results.numIndexesAfter ? 'Success!' : 'Index already exists.');
         }
